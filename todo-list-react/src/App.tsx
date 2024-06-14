@@ -1,7 +1,9 @@
+import { TodoListComponent } from "./components/TodoList";
+
 function App() {
   return (
     <>
-      <h1>Clean app</h1>
+      <TodoListComponent />
     </>
   );
 }
