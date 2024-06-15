@@ -17,7 +17,7 @@ export class TodoHttpService
     private requestHandler: RequestHandler
   ) {}
 
-  private url = "https://jsonplaceholder.typicode.com/todos";
+  private url = "http://localhost:3000/todos";
 
   async get(): Promise<HttpPayload<Todo[]>> {
     return await this.requestHandler.handle(() =>
