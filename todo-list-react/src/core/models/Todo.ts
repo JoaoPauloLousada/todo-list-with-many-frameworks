@@ -8,7 +8,11 @@ export class Todo {
   completed: boolean = false;
 
   private constructor(data: TodoInput) {
-    Object.assign(this, { ...data, completed: false, id: this.createId() });
+    Object.assign(this, {
+      ...data,
+      completed: data.completed ?? false,
+      id: this.createId(),
+    });
   }
 
   static create(data: TodoInput) {
