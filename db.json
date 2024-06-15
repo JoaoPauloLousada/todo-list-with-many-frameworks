@@ -1,0 +1,22 @@
+{
+  "todos": [
+    {
+      "id": "38156ee9-5215-445e-ad82-f1863678d185",
+      "text": "item 1",
+      "dateTime": "2024-06-15T17:01",
+      "completed": false
+    },
+    {
+      "id": "4cded2f1-f743-4211-9c9f-95216f80800e",
+      "text": "item 2",
+      "dateTime": "2024-06-15T17:01",
+      "completed": true
+    },
+    {
+      "id": "b7f989ed-0437-4c02-b790-665515204e5f",
+      "text": "item 3",
+      "dateTime": "2024-06-15T17:01",
+      "completed": false
+    }
+  ]
+}
