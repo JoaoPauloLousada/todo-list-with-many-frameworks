@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { createTodoUseCase, getTodoListUseCase } from "../dependencies";
+import { createTodoUseCase } from "../dependencies";
 import { Todo } from "../core/models/Todo";
-import { useStore } from "../hooks/useStore";
+import { useLoadTodoList } from "../hooks/useLoadTodoList";
 
 type TodoAddStatus = "inactive" | "active";
 type FormInputData = {
@@ -13,28 +13,16 @@ type FormInputData = {
 export function TodoAdd() {
   const [status, setStatus] = useState<TodoAddStatus>("inactive");
   const { register, handleSubmit, reset } = useForm<FormInputData>();
-  const setTodoList = useStore((state) => state.setTodoList);
+  const { reloadTodoList } = useLoadTodoList();
 
   const onSubmit = (data: FormInputData) => {
-    let todo = Todo.create({ text: data.text });
-    if (data.datetime) {
-      todo = todo.update({ datetime: new Date(data.datetime) });
-    }
+    const todo = Todo.create({ ...data });
     createTodoUseCase.execute({
       vars: todo,
       next: () => {
-        getTodoListUseCase.execute({
-          next: ({ data, error }) => {
-            if (error) {
-              console.error({ error });
-            }
-            if (data) {
-              setTodoList(data);
-            }
-            reset();
-            setStatus("inactive");
-          },
-        });
+        reloadTodoList();
+        reset();
+        setStatus("inactive");
       },
     });
   };
@@ -66,7 +54,7 @@ export function TodoAdd() {
         className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="text"
         placeholder="Todo text"
-        {...register("text")}
+        {...register("text", { required: true, minLength: 1 })}
       />
       <input
         type="datetime-local"
