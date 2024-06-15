@@ -1,11 +1,11 @@
-import { getTodoListUseCase } from "./../dependencies";
-import { useEffect } from "react";
+import { getTodoListUseCase } from "../dependencies";
+import { useCallback } from "react";
 import { useStore } from "./useStore";
 
-export const useLoadTodos = () => {
+export const useLoadTodoList = () => {
   const setTodoList = useStore((state) => state.setTodoList);
 
-  useEffect(() => {
+  const reloadTodoList = useCallback(() => {
     getTodoListUseCase.execute({
       next: ({ data, error }) => {
         if (error) {
@@ -16,5 +16,7 @@ export const useLoadTodos = () => {
         }
       },
     });
-  }, []);
+  }, [setTodoList]);
+
+  return { reloadTodoList };
 };
