@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { createTodoUseCase, getTodoListUseCase } from "../dependencies";
+import { Todo } from "../core/models/Todo";
+import { useStore } from "../hooks/useStore";
 
 type TodoAddStatus = "inactive" | "active";
 type FormInputData = {
@@ -10,9 +13,30 @@ type FormInputData = {
 export function TodoAdd() {
   const [status, setStatus] = useState<TodoAddStatus>("inactive");
   const { register, handleSubmit, reset } = useForm<FormInputData>();
+  const setTodoList = useStore((state) => state.setTodoList);
 
   const onSubmit = (data: FormInputData) => {
-    console.log({ data });
+    let todo = Todo.create({ text: data.text });
+    if (data.datetime) {
+      todo = todo.update({ datetime: new Date(data.datetime) });
+    }
+    createTodoUseCase.execute({
+      vars: todo,
+      next: () => {
+        getTodoListUseCase.execute({
+          next: ({ data, error }) => {
+            if (error) {
+              console.error({ error });
+            }
+            if (data) {
+              setTodoList(data);
+            }
+            reset();
+            setStatus("inactive");
+          },
+        });
+      },
+    });
   };
 
   const cancel = () => {
