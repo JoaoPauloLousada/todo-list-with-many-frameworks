@@ -1,18 +1,13 @@
-import { Todo } from "../core/models/Todo";
-import { TodoList } from "../core/models/TodoList";
+import { useStore } from "../hooks/useStore";
 import { TodoListItem } from "./TodoListItem";
 
-const list = TodoList.create([
-  Todo.create({ text: "todo one" }),
-  Todo.create({ text: "second todo" }),
-  Todo.create({ text: "another todo", completed: true }),
-]);
-
 export function TodoListComponent() {
+  const todoList = useStore((state) => state.todoList);
+
   return (
     <div className="">
       <div className="divide-y">
-        {list.list.map((todo) => (
+        {todoList.list.map((todo) => (
           <TodoListItem todo={todo} key={todo.id} />
         ))}
       </div>
