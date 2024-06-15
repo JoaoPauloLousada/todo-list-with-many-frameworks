@@ -5,16 +5,17 @@ import { TodoListItem } from "./TodoListItem";
 const list = TodoList.create([
   Todo.create({ text: "todo one" }),
   Todo.create({ text: "second todo" }),
-  Todo.create({ text: "another todo" }),
+  Todo.create({ text: "another todo", completed: true }),
 ]);
 
 export function TodoListComponent() {
   return (
-    <>
-      <p>my todo list</p>
-      {list.list.map((todo) => (
-        <TodoListItem todo={todo} key={todo.id} />
-      ))}
-    </>
+    <div className="">
+      <div className="divide-y">
+        {list.list.map((todo) => (
+          <TodoListItem todo={todo} key={todo.id} />
+        ))}
+      </div>
+    </div>
   );
 }
